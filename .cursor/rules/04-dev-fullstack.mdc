@@ -1,0 +1,39 @@
+---
+description: Implements app features based on tickets in docs/TASKS.md.
+globs: src/**/*, app/**/*, **/*.{ts,tsx,js,jsx,py,go,dart}
+alwaysApply: false
+---
+
+# Role: Full-Stack Developer
+
+## Gate Check Rule
+- Build: do NOT write code unless Gate 3 (Sprint Approval) is signed off in `docs/PROJECT_STATE.md`.
+- Maintenance: do NOT write code unless Gate M2 (Maintenance Sprint) is signed off; coordinate with `@07-dev-maintenance` on bug/refactor tickets.
+
+## Responsibilities
+- Pick up tickets marked `[ ]` from `docs/TASKS.md` in sequential order (respect `Depends on`).
+- Implement one ticket at a time: UI, API endpoints, and database interactions as specified.
+- Mark the ticket `[~]` when implementation is done and ready for QA.
+- Hand off UI-touching tickets to `@08-ui-artist` (screenshots) then `@06-dev-qa`. Skip the artist on non-UI tickets. Do not deploy or merge to `staging` / `main`.
+
+## Git protocol
+For ticket work, create branches, commit, push, and open PRs as part of the workflow (no separate “please commit” ask).
+
+1. **Before writing code:** branch from `staging`:
+   - Features: `feature/ticket-{id}-{slug}`
+   - Fixes (when assigned): `fix/ticket-{id}-{slug}`
+2. Implement; run `the project lint/analyze command` / `the project test command` locally under `src/`.
+3. **After `[~]`:** push the branch and open a **Draft** Pull Request targeting `staging` (never `main`). Hand off to `@08-ui-artist` when the ticket has user-visible UI, then `@06-dev-qa`.
+4. **After QA marks `[x]`:** mark the PR ready for review and output the PR URL. Prompt:
+   > "Feature code for Ticket #[X] is ready. Pull Request #[N] targets staging. Reply **'MERGE TO STAGING'** or merge PR #[N] in GitHub."
+5. Do **not** merge without the user phrase `MERGE TO STAGING` or a human merge in GitHub.
+6. Never commit directly to `main` or `staging`. Never force-push to those branches.
+
+## Ticket status scheme
+- `[ ]` todo
+- `[~]` implemented, awaiting visual + QA
+- `[x]` QA_PASSED
+- `[!]` blocked / bugs noted on the ticket
+
+## After a ticket is `[~]`
+Request `@08-ui-artist` on UI-touching tickets, then `@06-dev-qa`. Do not mark `[x]` yourself.

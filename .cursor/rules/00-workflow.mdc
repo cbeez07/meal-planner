@@ -1,0 +1,88 @@
+---
+description: Multi-agent gated workflow orchestrator. Always apply; routes build vs maintenance phases and owns gate approvals.
+alwaysApply: true
+---
+
+# Workflow Orchestrator
+
+Two tracks share this repo. Read `docs/PROJECT_STATE.md` and act only on the active track.
+
+New projects start at `STATUS: PENDING_RESEARCH_APPROVAL`. Run `@01-researcher` first.
+
+## Build track (greenfield → first production)
+1. `@01-researcher` → Gate 1 (Market & Idea)
+2. `@02-architect` → Gate 2 (Architecture & Cost)
+3. `@03-manager` → Gate 3 (Sprint Tickets)
+4. `@04-dev-fullstack` → implement tickets
+5. `@08-ui-artist` → screenshot visual pass (UI-touching tickets)
+6. `@06-dev-qa` → verify tickets
+7. `@05-dev-ops` → Gate 4 (Production Release)
+
+## Maintenance track (feedback → hotfix/release)
+1. `@01-researcher` and/or `@07-dev-maintenance` → Gate M1 (Feedback & Backlog)
+2. `@02-architect` evaluates structural impact when refactors or complex features are proposed
+3. `@03-manager` → Gate M2 (Maintenance Sprint)
+4. `@04-dev-fullstack` and/or `@07-dev-maintenance` → implement tickets
+5. `@08-ui-artist` → screenshot visual pass (UI-touching tickets)
+6. `@06-dev-qa` → regression verify
+7. `@05-dev-ops` stages release → Gate M3 (Hotfix & Release)
+
+## Before every action
+1. Read `docs/PROJECT_STATE.md`.
+2. Act only as the role for the current phase / track. Do not skip gates.
+3. Build track: do not write application code until Gate 3 is checked off.
+4. Maintenance track: do not write application code until Gate M2 is checked off (except read-only triage by `@07-dev-maintenance`).
+5. `@08-ui-artist` screenshot review is allowed any time; visual-only code still follows Gate 3 / M2.
+
+## On user reply `APPROVED`
+### Build track
+1. Check off the gate matching the current build `STATUS`.
+2. Update `STATUS`:
+   - After Gate 1 → `PENDING_ARCHITECTURE_APPROVAL` → run `@02-architect`
+   - After Gate 2 → `PENDING_SPRINT_APPROVAL` → run `@03-manager`
+   - After Gate 3 → `IMPLEMENTATION` → run `@04-dev-fullstack`
+3. Continue only after the file is updated.
+
+### Maintenance track
+1. Check off the maintenance gate matching the current maintenance `STATUS`.
+2. Update maintenance `STATUS`:
+   - After Gate M1 → `PENDING_MAINTENANCE_SPRINT_APPROVAL` → run `@03-manager` (and `@02-architect` if structural impact is flagged)
+   - After Gate M2 → `MAINTENANCE_IMPLEMENTATION` → run `@04-dev-fullstack` / `@07-dev-maintenance`
+3. Continue only after the file is updated.
+
+## GitHub & merge phrases
+
+Gates 1–4 and M1–M3 remain product/process approvals in `docs/PROJECT_STATE.md`. GitHub merges are a **separate phrase layer**. Gate 3 is Sprint Tickets approval — it is **not** the staging merge gate.
+
+### Branch standards
+- `main`: production (protected; merge only via PR after `DEPLOY TO PRODUCTION`).
+- `staging`: integration / staging environment (merge only via PR after `MERGE TO STAGING` or human GitHub merge).
+- `feature/*` or `fix/*`: ephemeral ticket branches from `docs/TASKS.md` (e.g. `feature/ticket-12-refactor-auth`).
+- Never commit directly to `main` or `staging`. Never force-push to `main` or `staging`.
+
+### Ticket → staging → production (shared by build and maintenance)
+1. `@04-dev-fullstack` or `@07-dev-maintenance` branches from `staging`, implements, opens a Draft PR targeting `staging`.
+2. On UI-touching tickets, `@08-ui-artist` captures screenshots, reads the images, and notes `visual OK` or `[!]`.
+3. `@06-dev-qa` verifies on the PR (local + CI); marks ticket `[x]` or `[!]`. Do not `[x]` while visual review is `[!]`.
+4. On `[x]`, PR is marked ready; user replies `MERGE TO STAGING` (or merges in GitHub).
+5. After merge, `@06-dev-qa` may smoke against the staging backend / environment and CI build artifacts.
+6. `@05-dev-ops` opens PR `staging` → `main` when the release set is ready; user replies `DEPLOY TO PRODUCTION`.
+
+### On user reply `MERGE TO STAGING`
+1. Confirm the named feature/fix PR targets `staging`, CI is green, and the ticket is `[x]` (or explicitly waived).
+2. Allow merge of that PR into `staging` (agent may merge only after this phrase, or confirm the user already merged in GitHub).
+3. Do **not** check off Gate 4 / M3. Hand off to `@06-dev-qa` for staging smoke when applicable.
+
+### On user reply `DEPLOY TO PRODUCTION`
+1. Check off Gate 4 (build) or Gate M3 (maintenance) as appropriate.
+2. Set build `STATUS: PRODUCTION_RELEASE` or maintenance `STATUS: MAINTENANCE_RELEASED`.
+3. Allow `@05-dev-ops` to merge the `staging` → `main` release PR and provision / ship. Never deploy or merge to `main` without this exact phrase.
+
+## Ticket status scheme (docs/TASKS.md)
+- `[ ]` todo
+- `[~]` implemented, awaiting visual + QA
+- `[x]` QA_PASSED
+- `[!]` blocked / bugs noted on the ticket
+
+## Agent references
+Use filenames only: `@01-researcher`, `@02-architect`, `@03-manager`, `@04-dev-fullstack`, `@05-dev-ops`, `@06-dev-qa`, `@07-dev-maintenance`, `@08-ui-artist`.
