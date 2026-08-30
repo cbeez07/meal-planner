@@ -1,59 +1,49 @@
 # Weekly Meals
 
-Weekly Meals — product TBD at Gate 1
+Private household app: save recipes, pick an **anchor dinner**, fill 3–5 nights from recipes that share ingredients, and shop for **five**.
 
-This repo is a **gated agent team** for Cursor and/or Antigravity. Agents read `docs/PROJECT_STATE.md` and do not skip gates.
+Runs on a home server. Phones reach it over **Netbird** (or LAN). Do **not** port-forward 3000/80/443 to the public internet.
 
-**Stack preset:** Generic (stack chosen at Gate 2) (`generic`). Architect may change this at Gate 2.
+## Local commands
 
-## Start here
+App lives in `src/`.
 
-1. Open this folder in Cursor or Antigravity.
-2. Run **`@01-researcher`** with your product idea (Gate 1).
-3. Reply **`APPROVED`** to advance. Do not write application code until Gate 3 is checked off.
+```bash
+cp .env.example .env.local
+# set AUTH_SECRET (openssl rand -base64 32) and household passwords
 
-## Tracks
+pnpm install
+pnpm dev          # http://localhost:3000
+pnpm lint
+pnpm test
+pnpm test:e2e
+pnpm build && pnpm start
+```
 
-| Track | Path | Gates |
-| --- | --- | --- |
-| Build | greenfield → first production | 1 research → 2 architecture → 3 tickets → 4 production |
-| Maintenance | feedback → hotfix/release | M1 backlog → M2 sprint → M3 release |
+Default seed users (override in env): `planner` / `planner` and `shopper` / `shopper`.
 
-## Roles
+## Docker (home server)
 
-| Mention | Role |
-| --- | --- |
-| `@01-researcher` | Market research, personas, post-launch triage |
-| `@02-architect` | Stack, schema, APIs, structural impact |
-| `@03-manager` | Tickets, cost, 60/20/20 sprint mix |
-| `@04-dev-fullstack` | Implement tickets (after Gate 3 / M2) |
-| `@08-ui-artist` | Screenshot visual pass (pixels, not only source) |
-| `@06-dev-qa` | Verify, mark `[x]` / `[!]` |
-| `@05-dev-ops` | CI, env, staging → production |
-| `@07-dev-maintenance` | Bugs, refactors, tech debt |
+```bash
+cp .env.example .env
+# set AUTH_SECRET, AUTH_URL (Netbird IP or MagicDNS), and passwords
+docker compose up --build
+```
 
-## Approval phrases
+- App: port **3000** on LAN / Netbird only.
+- Data: Docker volume `meals-data` → `/data/app.db` and `/data/uploads`.
+- Backup: copy the volume or `/data` directory.
 
-Product/process gates live in `docs/PROJECT_STATE.md`. GitHub merges are a separate phrase layer:
+Threat model is a **trusted tailnet + household passwords**. HTTP on Netbird is acceptable (the tunnel is already encrypted). Café Wi-Fi without Netbird is not.
 
-- **`APPROVED`** — check off the current gate and continue to the next role
-- **`MERGE TO STAGING`** — merge a feature/fix PR into `staging` (not Gate 4 / M3)
-- **`DEPLOY TO PRODUCTION`** — merge `staging` → `main` and ship
+## Env
 
-## Ticket status (`docs/TASKS.md`)
+See `.env.example`. `LLM_*` can stay empty — import still returns a draft to review (or an empty form with the URL saved).
 
-`[ ]` todo · `[~]` implemented, awaiting visual + QA · `[x]` QA_PASSED · `[!]` blocked
+## Agent workflow
 
-## Branches
+Gated team — read `docs/PROJECT_STATE.md`. Do not skip gates.
 
-- `main` — production (protected; merge only after `DEPLOY TO PRODUCTION`)
-- `staging` — integration
-- `feature/ticket-*` / `fix/ticket-*` — branched from `staging`
-
-Never commit directly to `main` or `staging`. Never force-push those branches.
-
-## Local commands (preset)
-
-- App dir: `src/`
-- Analyze: `the project lint/analyze command`
-- Test: `the project test command`
+- **`APPROVED`** — advance the current product gate
+- **`MERGE TO STAGING`** — merge a feature PR into `staging`
+- **`DEPLOY TO PRODUCTION`** — merge `staging` → `main` and ship to the home server
