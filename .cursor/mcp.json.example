@@ -1,0 +1,22 @@
+{
+  "_comment": "Copy to ~/.cursor/mcp.json (recommended for GitHub) or .cursor/mcp.json. Replace placeholders. Never commit real keys.",
+  "mcpServers": {
+    "context7": {
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        "CONTEXT7_API_KEY": "YOUR_CONTEXT7_API_KEY"
+      }
+    },
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/",
+      "headers": {
+        "Authorization": "Bearer YOUR_GITHUB_CLASSIC_PAT"
+      }
+    },
+    "xcode-tools": {
+      "command": "xcrun",
+      "args": ["mcpbridge"]
+    }
+  }
+}

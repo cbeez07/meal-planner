@@ -1,0 +1,38 @@
+# Secrets
+.env
+.env.local
+.env.staging
+.env.production
+.cursor/mcp.json
+.agents/mcp_config.json
+
+# Dependencies & build
+node_modules/
+dist/
+build/
+coverage/
+.next/
+out/
+
+# App data
+data/
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Playwright
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# IDE / OS
+.DS_Store
+.idea/
+.vscode/
+*.log
+*.iml
+*.pem
+*.tsbuildinfo
+next-env.d.ts
