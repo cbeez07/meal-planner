@@ -1,15 +1,15 @@
 # Project State & Approval Tracker
 
 **Project:** Weekly Meals (`weekly-meals`)
-**Stack preset:** generic — Generic (stack chosen at Gate 2)
+**Stack preset:** Next.js + SQLite — chosen at Gate 2 (see `docs/ARCHITECTURE.md`)
 
 ## Build track
-STATUS: PENDING_RESEARCH_APPROVAL
+STATUS: IMPLEMENTATION
 
 ### Build gate approvals
-- [ ] Gate 1: Market & Idea Approved (User Sign-off)
-- [ ] Gate 2: Architecture & Cost Approved (User Sign-off)
-- [ ] Gate 3: Sprint Tickets Approved (User Sign-off)
+- [x] Gate 1: Market & Idea Approved (User Sign-off)
+- [x] Gate 2: Architecture & Cost Approved (User Sign-off)
+- [x] Gate 3: Sprint Tickets Approved (User Sign-off)
 - [ ] Gate 4: Production Release Approved (User Sign-off)
 
 ## Maintenance track

@@ -1,0 +1,15 @@
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      DATABASE_PATH: /data/app.db
+      UPLOAD_DIR: /data/uploads
+    volumes:
+      - meals-data:/data
+
+volumes:
+  meals-data:

@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+:root {
+  --paper: #f6f1e8;
+  --paper-2: #fffdf8;
+  --ink: #2c2418;
+  --muted: #6b5e4e;
+  --line: #e4d8c4;
+  --sage: #3f6b4f;
+  --sage-dark: #2d523a;
+  --terracotta: #c46a3a;
+  --chip: #efe4d2;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-2: var(--paper-2);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-sage: var(--sage);
+  --color-sage-dark: var(--sage-dark);
+  --color-terracotta: var(--terracotta);
+  --color-chip: var(--chip);
+  --font-sans: var(--font-source-serif), ui-serif, Georgia, serif;
+  --font-ui: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-ui);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-sans);
+  letter-spacing: -0.02em;
+}
