@@ -10,6 +10,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
+    "capture:ui": "node scripts/capture-ui.mjs",
     "db:generate": "drizzle-kit generate"
   },
   "dependencies": {

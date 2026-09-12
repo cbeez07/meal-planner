@@ -8,6 +8,8 @@
 
 UI-touching tickets (T009, T012, T014, T017, plus shell on T003): after `[~]`, `@08-ui-artist` screenshots then `@06-dev-qa`. Do not mark `[x]` while visual review is `[!]`.
 
+Living design scratchpad: **`docs/design.md`**. Dated screenshot log: `docs/UI_REVIEW.md`. Recapture: `pnpm capture:ui`.
+
 ---
 
 ## Sprint overview
@@ -99,6 +101,7 @@ Priority if scope slips: **cut import polish (T016 LLM branch), keep T015 + empt
   - Sign out works. `/api/auth/session` returns `{ id, username, displayName }`.
   - Mobile-usable login + app shell (nav: Week, Recipes, Import, Shop, Staples).
   - UI-touching: shell/login included in T020.
+  - Visual 2026-09-12: `visual OK` (login + shell). See `docs/design.md`.
 
 ### T004: Docker Compose for home-server run
 - Status: [~]
@@ -179,6 +182,7 @@ Priority if scope slips: **cut import polish (T016 LLM branch), keep T015 + empt
   - `/recipes/:id` cook view: large type, ingredients + steps, source link if present. Usable on a phone.
   - Manual entry works with **no** import pipeline.
   - UI-touching.
+  - Visual 2026-09-12: `visual OK` (library, form, cook). Phone cook readable. See `docs/ui-reviews/2026-09-12/`.
 
 ### T010: Week and slot API
 - Status: [~]
@@ -219,6 +223,7 @@ Priority if scope slips: **cut import polish (T016 LLM branch), keep T015 + empt
   - Suggestions list shows “shares X, Y” chips; user can pick a suggestion **or** any other saved recipe.
   - 3-dinner week is valid (not an error state).
   - UI-touching.
+  - Visual 2026-09-12: `visual OK` (week + suggestions). Polish: native selects, text-only “Add to next empty night”.
 
 ### T013: Shopping list and staples API
 - Status: [~]
@@ -245,6 +250,7 @@ Priority if scope slips: **cut import polish (T016 LLM branch), keep T015 + empt
   - `/staples` add/remove don’t-shop items; changes reflect on next `/shop` load.
   - Usable one-handed on a phone.
   - UI-touching.
+  - Visual 2026-09-12: `visual OK` (shop + staples). Shop check rows are large; staples Remove is a small text link.
 
 ### T015: SSRF-safe URL fetch
 - Status: [~]
@@ -286,6 +292,7 @@ Priority if scope slips: **cut import polish (T016 LLM branch), keep T015 + empt
   - Failed extract still shows the URL and an empty form.
   - User cannot skip review (no “save without looking” that bypasses the form).
   - UI-touching.
+  - Visual 2026-09-12: `visual OK` (failed extract + empty review form).
 
 ### T018: Playwright north-star path + runbook
 - Status: [~]
@@ -311,11 +318,12 @@ Priority if scope slips: **cut import polish (T016 LLM branch), keep T015 + empt
   - Can complete once T001+T004 exist; re-run after T018 if the workflow needs Playwright later (Playwright in CI is optional for this sprint).
 
 ### T020: Visual pass on household UI
-- Status: [ ]
+- Status: [~]
 - Owner: @08-ui-artist
 - Track: build
 - Category: feature
 - Depends on: T003, T009, T012, T014, T017
+- Visual 2026-09-12: `visual OK` on login, week, suggestions, cook, form, import, shop, staples (desktop + phone). Living notes in `docs/design.md`. Screenshot log in `docs/UI_REVIEW.md`. Recapture with `pnpm capture:ui`. Not `[x]` — `@06-dev-qa` owns T021.
 - Acceptance criteria:
   - Screenshots (desktop + a phone viewport) of: login, week planner, suggestions, recipe cook, recipe form, import review, shop, staples.
   - Notes `visual OK` or `[!]` in `docs/UI_REVIEW.md` per screen.
